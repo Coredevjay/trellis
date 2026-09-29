@@ -483,6 +483,8 @@ Trellis is a monorepo with three layers:
 | `cancel_unfunded_milestone` | Payer | Cancels a milestone that was never funded |
 | `get_agreement` | Anyone | Returns the full current state of an agreement (read-only) |
 | `get_total_amount` | Anyone | Returns the agreement's total value — sum of all milestone amounts (read-only) |
+| `batch_lock_funds` | Payer | Funds multiple milestones atomically in one transaction |
+| `get_milestone` | Anyone | Returns a single milestone's state, or none if the agreement or milestone does not exist (read-only) |
 | `extend_agreement_ttl` | Anyone | Renews an agreement's ledger TTL to avoid archival |
 
 <details>
@@ -612,11 +614,14 @@ trellis init \
 # Check status
 trellis status --agreement-id <hex-id>
 
+# Check a single milestone's status
+trellis milestone-status --agreement-id <hex-id> --milestone-id 0
+
 # Fund the first milestone
 trellis lock-funds --agreement-id <hex-id> --milestone-id 0
 ```
 
-All **8 CLI commands** are implemented — `init`, `lock-funds`, `submit-work`, `approve-release`, `raise-dispute`, `resolve-dispute`, `cancel-milestone`, and `status`. See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full command reference.
+All **9 escrow commands** are implemented — `init`, `lock-funds`, `submit-work`, `approve-release`, `raise-dispute`, `resolve-dispute`, `cancel-milestone`, `status`, and `milestone-status`. The CLI also provides two utility commands: `completion` (see [Shell Completions](#shell-completions)) and `keys` (manage secret keys in the OS keychain). See [DEPLOYMENT.md](./DEPLOYMENT.md) for the full command reference.
 
 #### Global Output Flags
 
@@ -665,10 +670,10 @@ Supported shells: `bash`, `zsh`, `fish`, `elvish`, `powershell`.
 
 ### ✅ Complete
 
-- Core Soroban escrow contract — all 10 entrypoints implemented and tested
+- Core Soroban escrow contract — all 12 entrypoints implemented and tested
 - Full state machine — happy path, dispute resolution, and cancellation paths
 - Integration test suite — 41/41 passing in the Soroban sandbox
-- Full CLI — all 8 commands wired end-to-end with JSON, dry-run, and human-readable output modes
+- Full CLI — all 9 escrow commands wired end-to-end with JSON, dry-run, and human-readable output modes
 - Deployed live on Stellar testnet — `init` and `status` verified against the live contract
 - Frontend dashboard — 5 pages, 28 components, 12 custom hooks, animated particle network background
 - Wallet connect — Freighter wallet integration with connection states
